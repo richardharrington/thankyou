@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Untitled</title>
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<style type="text/css">
+		
+		.rangeslider {
+			width: 200px;
+		}
+		
+		#page_controls {
+			position: fixed;
+			bottom: 20px;
+			font-family: Arial;
+			font-size: 20px;
+		}
+		#page_controls span {
+			float: left;
+			margin-left: 20px;
+		}
+			
+	</style>
+</head>
+<body>
+
+<div id="main"></div>
+
+<div id="page_controls">
+	<span>Modify Spacing</span>
+	<span>
+		<input type="range" min="100" max="400" value="130">
+	</span>
+</div>
+
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/1.2.1/rangeslider.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/app.js"></script>
+<script src="https://fb.me/react-0.13.3.js"></script>
+<script src="https://fb.me/JSXTransformer-0.13.3.js"></script>
+<script type="text/jsx">
+
+/** @jsx React.DOM */
+
+
+var Timeline = React.createClass({
+
+    getInitialState: function() {
+        return {
+        	phone : '',
+            messages: []
+        };
+    },
+    
+  componentDidMount: function() {
+  	if(this.isMounted()) {
+  	
+		var host = window.document.location.host.replace(/:.*/, '');
+
+		var ws = new WebSocket('ws://' + host + ':8080');
+
+		ws.sendMessage = function(command, msg) {
+			this.send(JSON.stringify({
+				command : command || '',
+				msg : msg || ''
+			}));
+		}
+			
+		ws.onopen = function() {
+			ws.sendMessage('available');
+		};
+  	
+		ws.onmessage = function(mOb) {
+
+			var data = JSON.parse(mOb.data);
+			
+			if(data.messages && data.phone) {
+				return this.setState(data);
+			} 
+			
+			// other message handlers here
+			//
+			
+		}.bind(this);
+  	}
+  },    
+    
+	render: function() {
+    	return <div>
+			<MessageHistory history={this.state} />
+		</div>
+	}
+})
+
+var MessageHistory = React.createClass({
+
+    render: function() {
+    
+    	var history = this.props.history
+
+        return <div id="timeline_container">
+			<div className="history_header">
+				<figure>{history.phone}</figure>
+			</div>
+
+            <ul> 
+                { history.messages.map(function(it) {
+                    return 	<li className="message_event">
+
+                    	<div className={"event_icn icon-emo-" + it.sentiment}></div>
+                    	
+						<div className="event_content">
+							<p>{it.message}</p>
+						</div>
+						<div className="event_date">
+							{it.date}
+						</div>
+					</li>
+
+                }) }
+
+            </ul>
+        </div>;
+    }
+});
+
+React.render(
+    <Timeline />, document.getElementById('main')
+);
+
+</script>
+<script>
+
+(function() {
+	var $spacing;
+	var $range = $('input[type="range"]');
+	
+	$range
+	.rangeslider({
+	
+		polyfill: false,
+	
+		rangeClass: 'rangeslider',
+		fillClass: 'rangeslider__fill',
+		handleClass: 'rangeslider__handle',
+	
+		onInit: function() {},
+		onSlide: function(position, value) {},
+		onSlideEnd: function(position, value) {
+			$spacing = $spacing || $('div#timeline_container > ul > li');
+			$spacing.css('min-height', value);
+		}
+	})
+})();
+
+</script>
+
+</body>
+</html>
