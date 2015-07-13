@@ -29,12 +29,17 @@ module.exports = function(server) {
 			// idle socket connections. Just ping to keep alive (20sec).
 			//
 			(function $ping() {
-				switchboard.send(JSON.stringify({
-					type: 'ping'
-				}));
+				switchboard.ping();
 				keepalive = setTimeout($ping, 20000);
 			})();
 		};
+		
+		switchboard.on('pong', function() {
+			console.log('got pong');
+			// Do something re: switchboard unavailability if pong 
+			// not received after x seconds...
+			//
+		});
 		
 		switchboard.onmessage = function(event) {
 	
