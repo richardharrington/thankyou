@@ -90,15 +90,15 @@ module.exports = function(server) {
 			ws.send(JSON.stringify(obj));
 		};
 	
-		ws.on('message', function incoming(msg) {
+		ws.on('message', function incoming(payload) {
 
 			try {
-				var command = JSON.parse(msg).command;
+				payload = JSON.parse(payload);
 			} catch(e) {
 				return;
 			}
 			
-			switch(command) {
+			switch(payload.command) {
 			
 				case 'available':
 					ws.sendMessage({
@@ -120,10 +120,6 @@ module.exports = function(server) {
 				break;
 				
 				case 'response':
-					switchboard.send(JSON.stringify({
-						type: 'response',
-						msg : msg
-					}));
 				break;
 			
 				default:

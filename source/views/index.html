@@ -19,6 +19,20 @@
 			float: left;
 			margin-left: 20px;
 		}
+		#page_controls #composer {
+			width: 400px;
+			height: 60px;
+			font-size:14px;
+			border:0px;
+			padding: 4px;
+		}
+		#page_controls button {
+			position: relative;
+			width: 60px;
+			height: 40px;
+			font-size: 12px;
+			top: -36px;
+		}
 			
 	</style>
 </head>
@@ -31,6 +45,7 @@
 	<span>
 		<input type="range" min="100" max="400" value="130">
 	</span>
+	<span id="message-composer"></span>
 </div>
 
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
@@ -43,55 +58,48 @@
 
 /** @jsx React.DOM */
 
+var host = window.document.location.host.replace(/:.*/, '');
+var ws = new WebSocket('ws://' + host + ':8080');
+ws.sendMessage = function(command, msg) {
+	this.send(JSON.stringify({
+		command : command || '',
+		message : msg || ''
+	}));
+};
 
 var Timeline = React.createClass({
-
-    getInitialState: function() {
-        return {
-        	phone : '',
-            messages: []
-        };
-    },
-    
-  componentDidMount: function() {
-  	if(this.isMounted()) {
-  	
-		var host = window.document.location.host.replace(/:.*/, '');
-
-		var ws = new WebSocket('ws://' + host + ':8080');
-
-		ws.sendMessage = function(command, msg) {
-			this.send(JSON.stringify({
-				command : command || '',
-				msg : msg || ''
-			}));
-		}
-			
-		ws.onopen = function() {
-			ws.sendMessage('available');
+	
+	getInitialState: function() {
+		return {
+			phone : '',
+			messages: []
 		};
-  	
-		ws.onmessage = function(mOb) {
-
-			var data = JSON.parse(mOb.data);
-			
-			if(data.messages && data.phone) {
-				return this.setState(data);
-			} 
-			
-			// other message handlers here
-			//
-			
-		}.bind(this);
-  	}
-  },    
-    
+	},
+	
+	componentDidMount: function() {
+		if(this.isMounted()) {
+		
+			ws.onopen = function() {
+				ws.sendMessage('available');
+			};
+	
+			ws.onmessage = function(mOb) {
+	
+				var data = JSON.parse(mOb.data);	
+	
+				if(data.messages && data.phone) {
+					return this.setState(data);
+				} 
+			}.bind(this);
+		}
+	},    
+	
 	render: function() {
-    	return <div>
+		return <div>
 			<MessageHistory history={this.state} />
-		</div>
+			</div>
 	}
-})
+});
 
 var MessageHistory = React.createClass({
 
