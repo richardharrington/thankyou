@@ -57,20 +57,17 @@ module.exports = function(server) {
 			}
 	
 			if(data.type === 'update') {
-			
+
 				console.log("got update:", data);
-			
-				// Transform messages into expected format for UI.
-				// Note that we reverse (latest first).
-				//
+
 				messages = data.list.reverse().map(function(msg) {
-				
+
 					// Somewhat redundant, but the # is in the messages
 					//
 					data.phoneNumber = msg.phoneNumber;
 					
 					return {
-						date: Date.now(),
+						received: msg.received,
 						message: msg.message,
 						sentiment: 'devil'
 					}

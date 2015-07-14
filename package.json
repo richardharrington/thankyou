@@ -17,6 +17,7 @@
     "browser-sync": "^2.7.13",
     "browserify": "^10.2.4",
     "del": "^1.2.0",
+    "event-stream": "^3.3.1",
     "express": "^4.13.0",
     "express-session": "^1.11.3",
     "gulp": "^3.9.0",
@@ -30,6 +31,9 @@
     "inquirer": "^0.8.5",
     "lodash": "^3.10.0",
     "mkdirp": "^0.5.1",
+    "moment": "^2.10.3",
+    "sentiment": "^1.0.2",
+    "through2": "^2.0.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "ws": "^0.7.2"
