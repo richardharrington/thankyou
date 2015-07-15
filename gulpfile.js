@@ -1,26 +1,26 @@
 "use strict";
 
-var path    = require('path');
-var mkdirp    = require('mkdirp');
-var del     = require('del');
-var source    = require('vinyl-source-stream');
-var buffer    = require('vinyl-buffer');
+var path = require('path');
+var mkdirp = require('mkdirp');
+var del = require('del');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
 var browserSync = require('browser-sync');
-var browserify  = require('browserify');
-var gulp    = require('gulp');
-var changed   = require('gulp-changed');
-var debug   = require('gulp-debug');
-var concat    = require('gulp-concat');
-var jshint    = require('gulp-jshint');
-var uglify    = require('gulp-uglify');
-var react     = require('gulp-react');
-var minifyCss   = require('gulp-minify-css');
+var browserify = require('browserify');
+var gulp = require('gulp');
+var changed = require('gulp-changed');
+var debug = require('gulp-debug');
+var concat = require('gulp-concat');
+var jshint = require('gulp-jshint');
+var uglify = require('gulp-uglify');
+var react = require('gulp-react');
+var minifyCss = require('gulp-minify-css');
 
 var reload = browserSync.reload;
 
 var targets = {
   scripts:  './source/scripts',
-  _scripts:   './public/js',
+  _scripts: './public/js',
   styles:   './source/styles',
   _styles:  './public/css',
   views:    './source/views',

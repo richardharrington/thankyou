@@ -1,9 +1,9 @@
 "use strict";
 
-var http    = require('http');
-var session   = require('express-session')
-var express   = require('express');
-var bodyParser  = require('body-parser');
+var http = require('http');
+var session = require('express-session')
+var express = require('express');
+var bodyParser = require('body-parser');
 
 var defaultPort = 8080;
 
