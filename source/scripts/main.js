@@ -1,7 +1,7 @@
 //=====================================//
 //======== Font license info  =========//
 //=====================================//
-/*    
+/*
 ## Entypo
    Copyright (C) 2012 by Daniel Bruce
    Author:    Daniel Buce
@@ -23,47 +23,47 @@
 //=====================================//
 
 $(document).on('keydown',function(e){
-	if(e.which==40) {
-		scrollToNext();
-	} else if(e.which==38) {
-		scrollToPrev();
-	}
+  if(e.which==40) {
+    scrollToNext();
+  } else if(e.which==38) {
+    scrollToPrev();
+  }
 });
 
 $('div#timeline_container').on('click','li', function(){
-	showNext($(this));
+  showNext($(this));
 });
 
 function showNext(li){
-	var $itms=$('div#timeline_container li');
-	$itms.removeClass('active');
-	$(li).addClass('active');
-	$('html,body').stop().animate({ scrollTop: $(li).offset().top-$(li).height()}, 500,function(){
-		$('html,body').stop();
-	});
+  var $itms=$('div#timeline_container li');
+  $itms.removeClass('active');
+  $(li).addClass('active');
+  $('html,body').stop().animate({ scrollTop: $(li).offset().top-$(li).height()}, 500,function(){
+    $('html,body').stop();
+  });
 }
 
 function scrollToNext() {
-	var $itms=$('div#timeline_container > ul > li');
-	var $current=$itms.index($('div#timeline_container li.active'));
-	
-	if ($($itms[$current+1]).length>0 && !$($itms[$current+1]).hasClass('hidden')) {
-		$itms.removeClass('active');
-		$($itms[$current+1]).addClass('active');
-		$('html,body').stop().animate({ scrollTop: $($itms[$current+1]).offset().top-$($itms[$current+1]).height()}, 500);
-	} else {
-		$('html,body').stop().animate({ scrollTop: $(document).height()}, 500);
-	}
+  var $itms=$('div#timeline_container > ul > li');
+  var $current=$itms.index($('div#timeline_container li.active'));
+
+  if ($($itms[$current+1]).length>0 && !$($itms[$current+1]).hasClass('hidden')) {
+    $itms.removeClass('active');
+    $($itms[$current+1]).addClass('active');
+    $('html,body').stop().animate({ scrollTop: $($itms[$current+1]).offset().top-$($itms[$current+1]).height()}, 500);
+  } else {
+    $('html,body').stop().animate({ scrollTop: $(document).height()}, 500);
+  }
 }
 function scrollToPrev() {
-	var $itms=$('div#timeline_container > ul > li');
-	var $current=$itms.index($('div#timeline_container li.active'));
-	
-	if ($($itms[$current-1]).length>0 && !$($itms[$current-1]).hasClass('hidden')) {
-		$itms.removeClass('active');
-		$($itms[$current-1]).addClass('active');
-		$('html,body').stop().animate({ scrollTop: $($itms[$current-1]).offset().top-$($itms[$current-1]).height()}, 500);
-	} else {
-		$('html,body').stop().animate({ scrollTop: 0}, 500);
-	}
+  var $itms=$('div#timeline_container > ul > li');
+  var $current=$itms.index($('div#timeline_container li.active'));
+
+  if ($($itms[$current-1]).length>0 && !$($itms[$current-1]).hasClass('hidden')) {
+    $itms.removeClass('active');
+    $($itms[$current-1]).addClass('active');
+    $('html,body').stop().animate({ scrollTop: $($itms[$current-1]).offset().top-$($itms[$current-1]).height()}, 500);
+  } else {
+    $('html,body').stop().animate({ scrollTop: 0}, 500);
+  }
 }

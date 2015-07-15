@@ -1,51 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Untitled</title>
-	<link rel="stylesheet" type="text/css" href="css/app.css">
-	<style type="text/css">
-		
-		.rangeslider {
-			width: 200px;
-		}
-		
-		#page_controls {
-			position: fixed;
-			bottom: 20px;
-			font-family: Arial;
-			font-size: 20px;
-		}
-		#page_controls span {
-			float: left;
-			margin-left: 20px;
-		}
-		#page_controls #composer {
-			width: 400px;
-			height: 60px;
-			font-size:14px;
-			border:0px;
-			padding: 4px;
-		}
-		#page_controls button {
-			position: relative;
-			width: 60px;
-			height: 40px;
-			font-size: 12px;
-			top: -36px;
-		}
-			
-	</style>
+  <title>Untitled</title>
+  <link rel="stylesheet" type="text/css" href="css/app.css">
+  <style type="text/css">
+
+    .rangeslider {
+      width: 200px;
+    }
+
+    #page_controls {
+      position: fixed;
+      bottom: 20px;
+      font-family: Arial;
+      font-size: 20px;
+    }
+    #page_controls span {
+      float: left;
+      margin-left: 20px;
+    }
+    #page_controls #composer {
+      width: 400px;
+      height: 60px;
+      font-size:14px;
+      border:0px;
+      padding: 4px;
+    }
+    #page_controls button {
+      position: relative;
+      width: 60px;
+      height: 40px;
+      font-size: 12px;
+      top: -36px;
+    }
+
+  </style>
 </head>
 <body>
 
 <div id="main"></div>
 
 <div id="page_controls">
-	<span>Modify Spacing</span>
-	<span>
-		<input type="range" min="100" max="400" value="130">
-	</span>
-	<span id="message-composer"></span>
+  <span>Modify Spacing</span>
+  <span>
+    <input type="range" min="100" max="400" value="130">
+  </span>
+  <span id="message-composer"></span>
 </div>
 
 <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
@@ -61,70 +61,70 @@
 var host = window.document.location.host.replace(/:.*/, '');
 var ws = new WebSocket('ws://' + host + ':8080');
 ws.sendMessage = function(command, msg) {
-	this.send(JSON.stringify({
-		command : command || '',
-		message : msg || ''
-	}));
+  this.send(JSON.stringify({
+    command : command || '',
+    message : msg || ''
+  }));
 };
 
 var Timeline = React.createClass({
-	
-	getInitialState: function() {
-		return {
-			phone : '',
-			messages: []
-		};
-	},
-	
-	componentDidMount: function() {
-		if(this.isMounted()) {
-		
-			ws.onopen = function() {
-				ws.sendMessage('available');
-			};
-	
-			ws.onmessage = function(mOb) {
-	
-				var data = JSON.parse(mOb.data);	
-	
-				if(data.messages && data.phone) {
-					return this.setState(data);
-				} 
-			}.bind(this);
-		}
-	},    
-	
-	render: function() {
-		return <div>
-			<MessageHistory history={this.state} />
-			</div>
-	}
+
+  getInitialState: function() {
+    return {
+      phone : '',
+      messages: []
+    };
+  },
+
+  componentDidMount: function() {
+    if(this.isMounted()) {
+
+      ws.onopen = function() {
+        ws.sendMessage('available');
+      };
+
+      ws.onmessage = function(mOb) {
+
+        var data = JSON.parse(mOb.data);
+
+        if(data.messages && data.phone) {
+          return this.setState(data);
+        }
+      }.bind(this);
+    }
+  },
+
+  render: function() {
+    return <div>
+      <MessageHistory history={this.state} />
+      </div>
+  }
 });
 
 var MessageHistory = React.createClass({
 
     render: function() {
-    
-    	var history = this.props.history
+
+      var history = this.props.history
 
         return <div id="timeline_container">
-			<div className="history_header">
-				<figure>{history.phone}</figure>
-			</div>
+      <div className="history_header">
+        <figure>{history.phone}</figure>
+      </div>
 
-            <ul> 
+            <ul>
                 { history.messages.map(function(it) {
-                    return 	<li className="message_event">
+                    return  <li className="message_event">
 
-                    	<div className={"event_icn icon-emo-" + it.sentiment}></div>
-                    	
-						<div className="event_content">
-							<p>{it.message}</p>
-						</div>
-						<div className="event_date">
-							{it.date}
-						</div>
-					</li>
+                      <div className={"event_icn icon-emo-" + it.sentiment}></div>
+
+            <div className="event_content">
+              <p>{it.message}</p>
+            </div>
+            <div className="event_date">
+              {it.date}
+            </div>
+          </li>
 
                 }) }
 
@@ -141,25 +141,25 @@ React.render(
 <script>
 
 (function() {
-	var $spacing;
-	var $range = $('input[type="range"]');
-	
-	$range
-	.rangeslider({
-	
-		polyfill: false,
-	
-		rangeClass: 'rangeslider',
-		fillClass: 'rangeslider__fill',
-		handleClass: 'rangeslider__handle',
-	
-		onInit: function() {},
-		onSlide: function(position, value) {},
-		onSlideEnd: function(position, value) {
-			$spacing = $spacing || $('div#timeline_container > ul > li');
-			$spacing.css('min-height', value);
-		}
-	})
+  var $spacing;
+  var $range = $('input[type="range"]');
+
+  $range
+  .rangeslider({
+
+    polyfill: false,
+
+    rangeClass: 'rangeslider',
+    fillClass: 'rangeslider__fill',
+    handleClass: 'rangeslider__handle',
+
+    onInit: function() {},
+    onSlide: function(position, value) {},
+    onSlideEnd: function(position, value) {
+      $spacing = $spacing || $('div#timeline_container > ul > li');
+      $spacing.css('min-height', value);
+    }
+  })
 })();
 
 </script>
